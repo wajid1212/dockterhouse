@@ -22,5 +22,6 @@
     <script src="{{ asset('assets/js/table.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/tables/jquery-datatable.js') }}"></script>
     <script src="{{ asset('assets/js/pages/forms/basic-form-elements.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
 </body>
 </html>

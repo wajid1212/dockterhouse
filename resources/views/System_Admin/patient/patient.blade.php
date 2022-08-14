@@ -42,21 +42,22 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="POST" id="patient-form" action="{{ route('store.patient') }}" enctype="multipart/form-data">
+                                        <form method="POST" id="patient-form" action="{{ route('store.patient') }}"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <label for="firstname">Firstname</label>
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" id="firstname" name="firstname" class="form-control"
-                                                        placeholder="Enter your First Name">
+                                                    <input type="text" id="firstname" name="firstname"
+                                                        class="form-control" placeholder="Enter your First Name">
                                                 </div>
                                             </div>
 
                                             <label for="lastname">Lastname</label>
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" id="lastname" name="lastname" class="form-control"
-                                                        placeholder="Enter your Last Name">
+                                                    <input type="text" id="lastname" name="lastname"
+                                                        class="form-control" placeholder="Enter your Last Name">
                                                 </div>
                                             </div>
 
@@ -79,8 +80,8 @@
                                             <label for="username">Username</label>
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" id="username" name="username" class="form-control"
-                                                        placeholder="Enter your Username">
+                                                    <input type="text" id="username" name="username"
+                                                        class="form-control" placeholder="Enter your Username">
                                                 </div>
                                             </div>
 
@@ -95,22 +96,23 @@
                                             <label for="password">Password</label>
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="password" id="password" name="password" class="form-control"
-                                                        placeholder="Enter your Password">
+                                                    <input type="password" id="password" name="password"
+                                                        class="form-control" placeholder="Enter your Password">
                                                 </div>
                                             </div>
 
                                             <label for="photo">Photo</label>
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="file" id="photo" name="photo" class="form-control"
-                                                        placeholder="Enter your Photo">
+                                                    <input type="file" id="photo" name="photo"
+                                                        class="form-control" placeholder="Enter your Photo">
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" form="patient-form" class="btn btn-info waves-effect">Save</button>
+                                        <button type="submit" form="patient-form"
+                                            class="btn btn-info waves-effect">Save</button>
                                         <button type="button" class="btn btn-danger waves-effect"
                                             data-dismiss="modal">Cancel</button>
                                     </div>
@@ -149,9 +151,134 @@
                                                 <td class="center">{{ $data->username }}</td>
                                                 <td class="center">{{ $data->email }}</td>
                                                 <td class="center">
-                                                    <button class="btn tblActnBtn">
+                                                    <button class="btn tblActnBtn" data-toggle="modal" data-target="#edit-form{{ $data->id}}">
                                                         <i class="material-icons">mode_edit</i>
                                                     </button>
+                                                    <div class="modal fade" id="edit-form{{ $data->id}}" tabindex="-1"
+                                                        role="dialog" aria-labelledby="formModal" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="formModal">Edit Patient
+                                                                    </h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-left">
+                                                                    <form method="POST" id="patient-form{{ $data->id}}"
+                                                                        action="{{ route('update.patient', ['id' => $data->id]) }}"
+                                                                        enctype="multipart/form-data"
+                                                                        onsubmit="return validatePatient({{ $data->id }})"
+                                                                        >
+                                                                        @method('PUT')
+                                                                        @csrf
+                                                                        <label for="firstname">Firstname</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="text" id="firstname{{ $data->id }}"
+                                                                                    name="firstname" class="form-control"
+                                                                                    value="{{ $data->firstname}}"
+                                                                                    placeholder="Enter your First Name">
+                                                                            </div>
+                                                                            <div class="text-danger" id="fmsg{{ $data->id }}"></div>
+                                                                        </div>
+
+                                                                        <label for="lastname">Lastname</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="text" id="lastname{{ $data->id }}"
+                                                                                    name="lastname" class="form-control"
+                                                                                    value="{{ $data->lastname }}"
+                                                                                    placeholder="Enter your Last Name">
+                                                                            </div>
+                                                                            <div class="text-danger" id="lmsg{{ $data->id }}"></div>
+                                                                        </div>
+
+                                                                        <label for="dob">Date Of Birth</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="date" id="dob{{ $data->id }}"
+                                                                                    name="dob" class="form-control"
+                                                                                    value="{{ $data->dob }}"
+                                                                                    placeholder="Enter your Date of Birth">
+                                                                            </div>
+                                                                            <div class="text-danger" id="dmsg{{ $data->id }}"></div>
+                                                                        </div>
+
+                                                                        <label for="phone">Phone</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="number" id="phone{{ $data->id }}"
+                                                                                    name="phone" class="form-control"
+                                                                                    value="{{ $data->phone }}"
+                                                                                    placeholder="Enter your Phone Number">
+                                                                            </div>
+                                                                            <div class="text-danger" id="pmsg{{ $data->id }}"></div>
+                                                                        </div>
+
+                                                                        <label for="username">Username</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="text" id="username{{ $data->id }}"
+                                                                                    name="username" class="form-control"
+                                                                                    value="{{ $data->username }}"
+                                                                                    placeholder="Enter your Username">
+                                                                            </div>
+                                                                            <div class="text-danger" id="umsg{{ $data->id }}"></div>
+                                                                        </div>
+
+                                                                        <label for="email">Email</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="email" id="email{{ $data->id }}"
+                                                                                    name="email" class="form-control"
+                                                                                    value="{{ $data->email }}"
+                                                                                    placeholder="Enter your Email Address">
+                                                                            </div>
+                                                                            <div class="text-danger" id="emsg{{ $data->id }}"></div>
+                                                                        </div>
+
+                                                                        <label for="password"> Password</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="password" id="password{{ $data->id}}"
+                                                                                    name="password" class="form-control"
+                                                                                    placeholder="Enter your  Password">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <label for="confirm_password">Confirm Password</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="password" id="confirm_password{{ $data->id}}"
+                                                                                    name="confirm_password" class="form-control"
+                                                                                    placeholder="Enter your Confirm Password">
+                                                                            </div>
+                                                                            <div class="text-danger" id="cmsg{{ $data->id}}"></div>
+                                                                        </div>
+
+                                                                        <label for="photo">Photo</label>
+                                                                        <div class="form-group">
+                                                                            <div class="form-line">
+                                                                                <input type="file" id="photo"
+                                                                                    name="photo" class="form-control"
+                                                                                    placeholder="Enter your Photo">
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" form="patient-form{{ $data->id}}"
+                                                                        class="btn btn-info waves-effect">Save</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-danger waves-effect"
+                                                                        data-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <button class="btn tblActnBtn">
                                                         <i class="material-icons">delete</i>
                                                     </button>

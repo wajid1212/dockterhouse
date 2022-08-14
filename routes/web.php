@@ -26,6 +26,7 @@ Route::middleware([UserAuth::class])->group(function(){
         Route::get('home', 'AdminController@index')->name('admin.home');
         Route::get('patient-list', 'AdminController@getPatients')->name('patient.list');
         Route::post('store-patient', 'AdminController@storePatient')->name('store.patient');
+        Route::put('update-patient/{id}', 'AdminController@updatePatient')->name('update.patient');
     });
 });
 

@@ -61,4 +61,45 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Ooops! , Please Check Your Internet Connection! Try Again');
         }
     }
+
+    public function updatePatient(Request $request , $id)
+    {
+        $user = Patient::where('id', $id)->first();
+        $photo_address = "uploads/avarar.png";
+        if($request->file('photo')){
+            $file = $request->file('photo');
+            $name = 'uploads/patients/'.time().$file->getClientOriginalName();
+            $file->move('uploads/patients/', $name);
+            $photo_address = $name;
+        }else{
+            $photo_address = $user->photo;
+        }
+
+        $password = "";
+        if($request->password == ""){
+            $password = $user->password;
+        }else{
+            $password = Hash::make($request->password);
+        }
+
+        $patient = Patient::find($id);
+        $patient->firstname = $request->firstname;
+        $patient->lastname = $request->lastname;
+        $patient->dob = $request->dob;
+        $patient->phone = $request->phone;
+        $patient->username = $request->username;
+        $patient->email = $request->email;
+        $patient->password = $password;
+        $patient->photo = $photo_address;
+        $patient->created = Carbon::now();
+        $patient->updated = Carbon::now();
+        $patient->save();
+
+        if($patient){
+            return redirect()->back()->with('success', 'Patient Updated Successfully');
+        }else{
+            return redirect()->back()->with('error', 'Ooops! , Please Check Your Internet Connection! Try Again');
+        }
+    }
+
 }
